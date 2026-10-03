@@ -1,12 +1,37 @@
-<form [formGroup]="form" (ngSubmit)="submit()" class="flex gap-2">
-  <input
-    type="text"
-    formControlName="title"
-    placeholder="New task..."
-    class="flex-1 border p-2 rounded-xl"
-  />
+<form [formGroup]="form" (ngSubmit)="submit()">
+  <fieldset
+    [disabled]="submitting()"
+    class="flex flex-wrap gap-2"
+  >
+    <input
+      type="text"
+      formControlName="title"
+      placeholder="New task..."
+      aria-label="Task title"
+      class="flex-1 border p-2 rounded-xl"
+    />
 
-  <button type="submit" class="bg-blue-600 text-white px-4 rounded-xl" [disabled]="form.invalid">
-    Add
-  </button>
+    <input
+      type="text"
+      formControlName="user"
+      placeholder="Username..."
+      aria-label="Username"
+      class="border p-2 rounded-xl"
+    />
+
+    <button
+      type="submit"
+      [disabled]="form.invalid || submitting()"
+      class="bg-blue-600 text-white px-4 py-2 rounded-xl
+             disabled:opacity-50 cursor-pointer"
+    >
+      {{ submitting() ? 'Adding...' : 'Add' }}
+    </button>
+  </fieldset>
+
+  @if (error()) {
+    <p role="alert" class="text-red-600 text-sm mt-2">
+      {{ error() }}
+    </p>
+  }
 </form>

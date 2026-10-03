@@ -9,6 +9,17 @@ export const tasksActions = createActionGroup({
     'Load Tasks': emptyProps(),
     'Load Success': props<{ tasks: Task[] }>(),
     'Load Failure': props<{ error: string }>(),
+
+    // ADD & DELETE
+
+    'Add Task': props<{ title: string; user: string }>(),
+    'Add Success': props<{ task: Task }>(),
+    'Add Failure': props<{ error: string }>(),
+
+    'Delete Task': props<{ taskID: string }>(),
+    'Delete Success': props<{ taskID: string }>(),
+    'Delete Failure': props<{ error: string }>(),
+
     Toggle: props<{ taskID: string; completedStatus: boolean }>(),
     'Toggle Success': props<{ task: Task }>(),
     'Toggle Failure': props<{ error: string }>(),
