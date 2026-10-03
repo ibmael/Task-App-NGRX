@@ -16,16 +16,20 @@ export class TaskServices {
     return this._httpClient.get<Task[]>(this.baseUrl);
   }
 
-  createTask(task: any): Observable<Task> {
-    return this._httpClient.post<Task>(this.baseUrl, task);
-  }
+ createTask(
+  task: Pick<Task, 'title' | 'user'>,
+): Observable<Task> {
+  return this._httpClient.post<Task>(this.baseUrl, task);
+}
 
   // take updated completed
   toggleTaskCompletion(id: string, completed: boolean): Observable<Task> {
     return this._httpClient.patch<Task>(`${this.baseUrl}/${id}`, { completed });
   }
 
-  deleteTask(id: string): Observable<void> {
-    return this._httpClient.delete<void>(`${this.baseUrl}/${id}`);
-  }
+deleteTask(id: string): Observable<{ message: string }> {
+  return this._httpClient.delete<{ message: string }>(
+    `${this.baseUrl}/${id}`,
+  );
+}
 }

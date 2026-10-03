@@ -1,8 +1,11 @@
 import { Injectable, inject } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { tasksActions } from './tasks.actions';
-import { catchError, map, of, switchMap, tap } from 'rxjs';
+// my edites
+import { catchError, concatMap, map, of, switchMap, tap } from 'rxjs';
 import { TaskServices } from '../services/task-services';
+
+
 
 @Injectable()
 export class TasksEffects {
@@ -34,4 +37,41 @@ export class TasksEffects {
       ),
     );
   });
+// my edits
+addTask$ = createEffect(() =>
+  this.actions$.pipe(
+    ofType(tasksActions.addTask),
+    concatMap(({ title, user }) =>
+      this._taskServices.createTask({ title, user }).pipe(
+        map((task) => tasksActions.addSuccess({ task })),
+        catchError(() =>
+          of(
+            tasksActions.addFailure({
+              error: 'Failed to add task',
+            }),
+          ),
+        ),
+      ),
+    ),
+  ),
+);
+
+deleteTask$ = createEffect(() =>
+  this.actions$.pipe(
+    ofType(tasksActions.deleteTask),
+    concatMap(({ taskID }) =>
+      this._taskServices.deleteTask(taskID).pipe(
+        map(() => tasksActions.deleteSuccess({ taskID })),
+        catchError(() =>
+          of(
+            tasksActions.deleteFailure({
+              error: 'Failed to delete task',
+            }),
+          ),
+        ),
+      ),
+    ),
+  ),
+);
 }
+

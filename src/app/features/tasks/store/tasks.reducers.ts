@@ -41,4 +41,31 @@ export const tasksReducer = createReducer(
     ...state,
     filter,
   })),
+
+  // ADD & DELETE MY EDITS
+  on(tasksActions.addTask, tasksActions.deleteTask, (state) => ({
+  ...state,
+  error: null,
+})),
+
+on(tasksActions.addSuccess, (state, { task }) => ({
+  ...state,
+  tasks: [task, ...state.tasks],
+  error: null,
+})),
+
+on(tasksActions.deleteSuccess, (state, { taskID }) => ({
+  ...state,
+  tasks: state.tasks.filter((task) => task._id !== taskID),
+  error: null,
+})),
+
+on(
+  tasksActions.addFailure,
+  tasksActions.deleteFailure,
+  (state, { error }) => ({
+    ...state,
+    error,
+  }),
+),
 );
